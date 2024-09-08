@@ -2,6 +2,8 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import classification_report, confusion_matrix
+
 
 pd.set_option('display.max_columns', None)  # Show all columns
 pd.set_option('display.expand_frame_repr', False)  # Avoid line wrapping
@@ -63,3 +65,20 @@ X_train_scaled = scaler.fit_transform(X_train)
 
 # Scale the test data
 X_test_scaled = scaler.transform(X_test)
+
+
+# Initialize the RandomForestClassifier
+model = RandomForestClassifier(random_state=42)
+
+# Train the model on the training set
+model.fit(X_train_scaled, y_train)
+
+# Make predictions on the test set
+y_pred = model.predict(X_test_scaled)
+
+# Evaluate the model
+print("Classification Report:")
+print(classification_report(y_test, y_pred))
+
+print("Confusion Matrix:")
+print(confusion_matrix(y_test, y_pred))
