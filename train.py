@@ -1,5 +1,7 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.ensemble import RandomForestClassifier
 
 pd.set_option('display.max_columns', None)  # Show all columns
 pd.set_option('display.expand_frame_repr', False)  # Avoid line wrapping
@@ -31,6 +33,17 @@ df = pd.read_csv('spambase.data', header=None, names=column_names)
 
 # Check for missing values
 print(df.isnull().sum())
+# Check the shape of the dataset
+print("Dataset shape:", df.shape)
+
+# Check for missing values
+print("Missing values:", df.isnull().sum().sum())
+
+# Check class distribution (spam vs ham)
+print(df['spam'].value_counts())
+
+# Basic statistics for numeric features
+#print(df.describe())
 
 # Separate the features (X) and the target variable (y)
 X = df.drop(columns=['spam'])  # Features (all columns except 'spam')
@@ -41,3 +54,12 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 
 # Check the shape of the training and test sets
 print(f'Training set shape: {X_train.shape}, Test set shape: {X_test.shape}')
+
+# Initialize the StandardScaler
+scaler = StandardScaler()
+
+# Scale the training data
+X_train_scaled = scaler.fit_transform(X_train)
+
+# Scale the test data
+X_test_scaled = scaler.transform(X_test)
