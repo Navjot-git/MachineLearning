@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NER API Interface</title>
+    <!-- Google Font -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" type="text/css" href="/static/style.css" />
+  </head>
+  <body>
+    <h1>Named Entity Recognition</h1>
+    <form method="post" action="/extract-text/">
+      <label for="text">Enter text:</label><br />
+      <textarea id="text" name="text" rows="4" cols="50"></textarea><br /><br />
+      <input type="submit" value="Submit" />
+      <!-- New Button for Entities and Non-Entities -->
+      <input
+        type="submit"
+        formaction="/extract-entities-and-nonentities/"
+        value="Show All"
+      />
+    </form>
+
+    {% if entities_html %}
+    <h2>Extracted Entities:</h2>
+    <div class="entities">{{ entities_html|safe }}</div>
+    {% endif %}
+
+    <footer>Built with ❤️ using SpaCy and FastAPI</footer>
+  </body>
+</html>
