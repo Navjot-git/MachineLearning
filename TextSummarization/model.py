@@ -1,6 +1,9 @@
 from datasets import load_dataset
-from transformers import BartTokenizer
+from evaluate import load
+from transformers import BartTokenizer, BartForConditionalGeneration
+from transformers import Trainer, TrainingArguments
 from nltk.tokenize import sent_tokenize
+
 import nltk
 
 nltk.download('punkt_tab') # Tokenizer for sentence splitting
@@ -21,7 +24,7 @@ sample_article = dataset['train']['article'][0]
 # Tokenize the article into sentences
 tokenized_sentences = sent_tokenize(sample_article)
 
-print(f"Tokenized Sentences: {tokenized_sentences[:5]}")  # Display the first 5 sentences
+# print(f"Tokenized Sentences: {tokenized_sentences[:5]}")  # Display the first 5 sentences
 
 
 def preprocess_text(text):
@@ -70,9 +73,74 @@ tokenized_dataset = dataset.map(preprocess_batch, batched=True)
 print(tokenized_dataset)
 
 
-print(tokenized_dataset['train']['article'][0])
-print(tokenized_dataset['train']['highlights'][0])
-print(tokenized_dataset['train']['id'][0])
-print(tokenized_dataset['train']['input_ids'][0])
-print(tokenized_dataset['train']['attention_mask'][0])
-print(tokenized_dataset['train']['labels'][0])
+# print(tokenized_dataset['train']['article'][0])
+# print(tokenized_dataset['train']['highlights'][0])
+# print(tokenized_dataset['train']['id'][0])
+# print(tokenized_dataset['train']['input_ids'][0])
+# print(tokenized_dataset['train']['attention_mask'][0])
+# print(tokenized_dataset['train']['labels'][0])
+
+# Load the pre-trained BART model
+model = BartForConditionalGeneration.from_pretrained("facebook/bart-large-cnn")
+
+# Define training arguments 
+# training_args = TrainingArguments(
+#     output_dir="./results",         # Output directory for model checkpoints and logs
+#     eval_strategy="epoch",    # Evaluate at the end of each epoch
+#     learning_rate=2e-5,             # Learning rate
+#     per_device_train_batch_size=8,  # Batch size for training
+#     per_device_eval_batch_size=8,   # Batch size for evaluation
+#     num_train_epochs=3,             # Number of training epochs
+#     weight_decay=0.01,              # Weight decay for regularization
+#     logging_dir="./logs",           # Directory for logging
+#     logging_steps=100,              # Log every 100 steps
+#     save_total_limit=2,             # Only save the last 2 checkpoints
+# )
+
+# trainer = Trainer(
+#     model=model,
+#     args=training_args,
+#     train_dataset=tokenized_dataset["train"],       # Training dataset
+#     eval_dataset=tokenized_dataset["validation"]    # Validation dataset
+# )
+# print("Training...")
+# trainer.train()
+# print("Evaluating...")
+# trainer.evaluate()
+
+# Generating summaries (Inference)
+
+article = dataset['test']['article'][0]
+# Tokenize the article
+inputs = tokenizer(article, max_length=1024, return_tensors='pt', truncation=True)
+# Generate the summary
+summary_ids = model.generate(inputs['input_ids'], max_length=150, )
+# Decode the generated summary
+summary = tokenizer.decode(summary_ids[0], skip_special_tokens=True)
+# print(article)
+# print(inputs)
+# print(summary_ids)
+print(f"Original Article:\n{article[:500]}...")  # Display part of the article
+print(f"Generated Summary:\n{summary}")
+
+
+# Load the ROUGE metic: Recall-Oriented Understudy for Gisting Evaluation
+rouge = load("rouge")
+
+# Funcion to compute ROUGE scores
+def compute_rouge(predictions, references):
+    if isinstance(predictions, str):
+        predictions = [predictions]
+    if isinstance(references, str):
+        references = [references]
+    rouge_output = rouge.compute(predictions=predictions, references=references)
+    return rouge_output
+
+generated_summary="The Palestinian Authority becomes the 123rd member of the International Criminal Court. The move gives the court jurisdiction over alleged crimes in Palestinian territories. Israel and the United States opposed the Palestinians' efforts to join the body. But Palestinian Foreign Minister Riad al-Malki said it was a move toward greater justice."
+reference_summary=dataset['test']['highlights'][0]
+print(reference_summary)
+# Compute the ROUGE scores
+rouge_scores = compute_rouge(generated_summary,reference_summary)
+
+# Print the results
+print(rouge_scores)
