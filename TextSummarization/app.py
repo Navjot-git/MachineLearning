@@ -57,8 +57,10 @@ def summarize():
 
         # Highlight matching sentences between the article and summary
         highlighted_article, highlighted_summary = highlight_matches(article_text, summary)
+        rouge_scores = compute_rouge(generated_summary, reference_summary)
+
     
-    return render_template("index.html", summary=summary, highlighted_article=highlighted_article, highlighted_summary=highlighted_summary, article_text=article_text)
+    return render_template("index.html", summary=summary, highlighted_article=highlighted_article, highlighted_summary=highlighted_summary, article_text=article_text, rouge_scores=rouge_scores)
 
 if __name__ == "__main__":
     app.run(debug=True)
