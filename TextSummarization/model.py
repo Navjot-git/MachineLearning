@@ -1,3 +1,5 @@
+import matplotlib.pyplot as plt
+import seaborn as sns
 from datasets import load_dataset
 from evaluate import load
 from transformers import BartTokenizer, BartForConditionalGeneration
@@ -81,7 +83,7 @@ print(tokenized_dataset)
 # print(tokenized_dataset['train']['labels'][0])
 
 # Load the pre-trained BART model
-model = BartForConditionalGeneration.from_pretrained("facebook/bart-large-cnn")
+model = BartForConditionalGeneration.from_pretrained("facebook/bart-large-cnn", attn_implementation="eager")
 
 # Define training arguments 
 # training_args = TrainingArguments(
@@ -113,13 +115,23 @@ model = BartForConditionalGeneration.from_pretrained("facebook/bart-large-cnn")
 article = dataset['test']['article'][0]
 # Tokenize the article
 inputs = tokenizer(article, max_length=1024, return_tensors='pt', truncation=True)
-# Generate the summary
-summary_ids = model.generate(inputs['input_ids'], max_length=150, )
+# Generate the summary and capture attention weights
+outputs = model(
+    inputs['input_ids'], 
+    attention_mask=inputs["attention_mask"],
+    output_attentions=True,
+    return_dict=True,
+    )
+outputs2 = model.generate(
+    inputs['input_ids'], 
+    max_length=150
+    )
+print(outputs[0], outputs2[0])
 # Decode the generated summary
-summary = tokenizer.decode(summary_ids[0], skip_special_tokens=True)
+summary = tokenizer.decode(outputs[0], skip_special_tokens=True)
 # print(article)
 # print(inputs)
-# print(summary_ids)
+# print(outputs)
 print(f"Original Article:\n{article[:500]}...")  # Display part of the article
 print(f"Generated Summary:\n{summary}")
 
@@ -144,3 +156,21 @@ rouge_scores = compute_rouge(generated_summary,reference_summary)
 
 # Print the results
 print(rouge_scores)
+
+# Extract sequences and attentions
+attentions = outputs.attentions # This will give you a list of attention matrices from each layer
+
+# Display the shape of attention maps
+for idx, attn in enumerate(attentions):
+    print(f"Layer {idx + 1} attention shape: {attn.shape}")
+    
+    
+# Select the attention map for the first layer and first head
+attention_map = attentions[0][0].detach().numpy()  # Get the attention from the first layer, first head
+
+
+# Plot heatmap
+plt.figure(figsize=(10, 8))
+sns.heatmap(attention_map, cmap="viridis")
+plt.title("Attention Map for Layer 1, Head 1")
+plt.show()
