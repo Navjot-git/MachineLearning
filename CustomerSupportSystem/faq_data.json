@@ -1,0 +1,16 @@
+{
+  "faqs": [
+    {
+      "question": "What is your refund policy?",
+      "answer": "You can get a refund within 30 days of purchase."
+    },
+    {
+      "question": "How do I reset my password?",
+      "answer": "Head over to the settings and click on 'Forgot Password'."
+    },
+    {
+      "question": "What are your working hours?",
+      "answer": "Our support team is available 24/7."
+    }
+  ]
+}
