@@ -42,6 +42,73 @@
       .no-highlight {
         background-color: inherit;
       }
+      /* Styling for the ROUGE scores section */
+      #rouge-scores {
+          background-color: #f9f9f9;
+          padding: 20px;
+          border-radius: 10px;
+          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+          margin-top: 20px;
+          max-width: 600px;
+          margin-left: auto;
+          margin-right: auto;
+      }
+
+      #rouge-scores h3 {
+          text-align: center;
+          font-size: 24px;
+          color: #333;
+          margin-bottom: 20px;
+      }
+
+      /* Individual cards for each ROUGE score */
+      .rouge-card {
+          background-color: #ffffff;
+          padding: 15px;
+          border-radius: 8px;
+          margin-bottom: 15px;
+          border: 1px solid #ddd;
+          transition: box-shadow 0.3s ease;
+      }
+
+      .rouge-card:hover {
+          box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+      }
+
+      /* Label styling */
+      .rouge-card label {
+          font-size: 18px;
+          font-weight: 600;
+          color: #555;
+      }
+
+      /* Progress bar container */
+      .progress {
+          height: 25px;
+          background-color: #e9ecef;
+          border-radius: 5px;
+          overflow: hidden;
+          margin-top: 10px;
+      }
+
+      /* Progress bar styling */
+      .progress-bar {
+          font-size: 14px;
+          line-height: 25px;
+          font-weight: bold;
+          color: white;
+          text-align: center;
+          transition: width 0.6s ease;
+      }
+
+      .bg-warning {
+          background-color: #f0ad4e !important; /* ROUGE-L yellow */
+      }
+
+      .bg-info {
+          background-color: #5bc0de !important; /* ROUGE-Lsum light blue */
+      }
+
     </style>
   </head>
   <body>
@@ -94,34 +161,106 @@
         <h3>Generated Summary (Highlighted Matches):</h3>
         <div id="summary-text">{{ highlighted_summary|safe }}</div>
       </div>
+      {% if rouge_scores %}
+      <!-- HTML Structure for ROUGE Scores Section -->
+<div id="rouge-scores">
+  <h3>ROUGE Scores</h3>
 
-      <h3>ROUGE Scores</h3>
-      <div class="mt-3">
-          <label for="rouge1">ROUGE-1: {{ rouge_scores['rouge1']['fmeasure'] }}</label>
-          <div class="progress">
-              <div class="progress-bar" role="progressbar" style="width: {{ rouge_scores['rouge1']['fmeasure'] * 100 }}%;" aria-valuenow="{{ rouge_scores['rouge1']['fmeasure'] * 100 }}" aria-valuemin="0" aria-valuemax="100">
-                  {{ rouge_scores['rouge1']['fmeasure'] * 100 }}%
-              </div>
+  <!-- ROUGE-1 -->
+  <div class="rouge-card">
+      <label for="rouge1">ROUGE-1: {{ rouge_scores['rouge1'] }}</label>
+      <div class="progress" data-bs-toggle="tooltip" data-bs-placement="top" title="ROUGE-1 measures the overlap of unigrams (single words) between the system and reference summaries.">
+          <div class="progress-bar" role="progressbar" style="width: {{ rouge_scores['rouge1'] * 100 }}%;" aria-valuenow="{{ rouge_scores['rouge1'] * 100 }}" aria-valuemin="0" aria-valuemax="100">
+              {{ rouge_scores['rouge1'] * 100 }}%
           </div>
       </div>
+  </div>
 
-      <div class="mt-3">
-          <label for="rouge2">ROUGE-2: {{ rouge_scores['rouge2']['fmeasure'] }}</label>
-          <div class="progress">
-              <div class="progress-bar bg-success" role="progressbar" style="width: {{ rouge_scores['rouge2']['fmeasure'] * 100 }}%;" aria-valuenow="{{ rouge_scores['rouge2']['fmeasure'] * 100 }}" aria-valuemin="0" aria-valuemax="100">
-                  {{ rouge_scores['rouge2']['fmeasure'] * 100 }}%
-              </div>
+  <!-- ROUGE-2 -->
+  <div class="rouge-card">
+      <label for="rouge2">ROUGE-2: {{ rouge_scores['rouge2'] }}</label>
+      <div class="progress" data-bs-toggle="tooltip" data-bs-placement="top" title="ROUGE-2 measures the overlap of bigrams (two consecutive words) between the system and reference summaries.">
+          <div class="progress-bar bg-success" role="progressbar" style="width: {{ rouge_scores['rouge2'] * 100 }}%;" aria-valuenow="{{ rouge_scores['rouge2'] * 100 }}" aria-valuemin="0" aria-valuemax="100">
+              {{ rouge_scores['rouge2'] * 100 }}%
           </div>
       </div>
+  </div>
 
-      <div class="mt-3">
-          <label for="rougeL">ROUGE-L: {{ rouge_scores['rougeL']['fmeasure'] }}</label>
-          <div class="progress">
-              <div class="progress-bar bg-warning" role="progressbar" style="width: {{ rouge_scores['rougeL']['fmeasure'] * 100 }}%;" aria-valuenow="{{ rouge_scores['rougeL']['fmeasure'] * 100 }}" aria-valuemin="0" aria-valuemax="100">
-                  {{ rouge_scores['rougeL']['fmeasure'] * 100 }}%
-              </div>
+  <!-- ROUGE-L -->
+  <div class="rouge-card">
+      <label for="rougeL">ROUGE-L: {{ rouge_scores['rougeL'] }}</label>
+      <div class="progress" data-bs-toggle="tooltip" data-bs-placement="top" title="ROUGE-L measures the longest common subsequence (LCS) between the system and reference summaries.">
+          <div class="progress-bar bg-warning" role="progressbar" style="width: {{ rouge_scores['rougeL'] * 100 }}%;" aria-valuenow="{{ rouge_scores['rougeL'] * 100 }}" aria-valuemin="0" aria-valuemax="100">
+              {{ rouge_scores['rougeL'] * 100 }}%
           </div>
       </div>
+  </div>
+
+  <!-- ROUGE-Lsum -->
+  <div class="rouge-card">
+      <label for="rougeLsum">ROUGE-Lsum: {{ rouge_scores['rougeLsum'] }}</label>
+      <div class="progress" data-bs-toggle="tooltip" data-bs-placement="top" title="ROUGE-Lsum measures the longest common subsequence (LCS) across entire summaries.">
+          <div class="progress-bar bg-info" role="progressbar" style="width: {{ rouge_scores['rougeLsum'] * 100 }}%;" aria-valuenow="{{ rouge_scores['rougeLsum'] * 100 }}" aria-valuemin="0" aria-valuemax="100">
+              {{ rouge_scores['rougeLsum'] * 100 }}%
+          </div>
+      </div>
+  </div>
+</div>
+
+          <h3>ROUGE Scores</h3>
+
+          <div class="row">
+            <div class="col-md-6">
+              <!-- ROUGE-1 -->
+              <div class="mt-3">
+                <label for="rouge1">ROUGE-1: {{ rouge_scores['rouge1'] }}</label>
+                <div class="progress" data-bs-toggle="tooltip" data-bs-placement="top" title="ROUGE-1 measures the overlap of unigrams (single words) between the system and reference summaries.">
+                    <div class="progress-bar" role="progressbar" style="width: {{ rouge_scores['rouge1'] * 100 }}%;" aria-valuenow="{{ rouge_scores['rouge1'] * 100 }}" aria-valuemin="0" aria-valuemax="100">
+                        {{ rouge_scores['rouge1'] * 100 }}%
+                    </div>
+                </div>
+            </div>
+            </div>
+            <div class="col-md-6">
+              <!-- ROUGE-2 -->
+              <div class="mt-3">
+                <label for="rouge2">ROUGE-2: {{ rouge_scores['rouge2'] }}</label>
+                <div class="progress" data-bs-toggle="tooltip" data-bs-placement="top" title="ROUGE-2 measures the overlap of bigrams (two consecutive words) between the system and reference summaries.">
+                    <div class="progress-bar bg-success" role="progressbar" style="width: {{ rouge_scores['rouge2'] * 100 }}%;" aria-valuenow="{{ rouge_scores['rouge2'] * 100 }}" aria-valuemin="0" aria-valuemax="100">
+                        {{ rouge_scores['rouge2'] * 100 }}%
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <!-- ROUGE-L -->
+              <div class="mt-3">
+                <label for="rougeL">ROUGE-L: {{ rouge_scores['rougeL'] }}</label>
+                <div class="progress" data-bs-toggle="tooltip" data-bs-placement="top" title="ROUGE-L measures the longest common subsequence between the system and reference summaries. It considers sentence-level structure.">
+                    <div class="progress-bar bg-warning" role="progressbar" style="width: {{ rouge_scores['rougeL'] * 100 }}%;" aria-valuenow="{{ rouge_scores['rougeL'] * 100 }}" aria-valuemin="0" aria-valuemax="100">
+                        {{ rouge_scores['rougeL'] * 100 }}%
+                    </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mt-3">
+                <label for="rougeLsum">ROUGE-Lsum: {{ rouge_scores['rougeLsum'] }}</label>
+                <div class="progress" data-bs-toggle="tooltip" data-bs-placement="top" title="ROUGE-Lsum measures the longest common subsequence (LCS) across entire summaries, comparing the overall structure of the system and reference summaries.">
+                    <div class="progress-bar bg-info" role="progressbar" style="width: {{ rouge_scores['rougeLsum'] * 100 }}%;" aria-valuenow="{{ rouge_scores['rougeLsum'] * 100 }}" aria-valuemin="0" aria-valuemax="100">
+                        {{ rouge_scores['rougeLsum'] * 100 }}%
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      {% endif %}
+
 
 
       <div class="form-check form-switch mt-3">
@@ -154,6 +293,15 @@
             }
           });
         });
+        
+      // Initialize Bootstrap tooltips
+      document.addEventListener("DOMContentLoaded", function () {
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+        tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+          new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+      });
+      
     </script>
   </body>
 </html>

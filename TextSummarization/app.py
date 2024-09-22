@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request
+from datasets import load_dataset
 from transformers import BartTokenizer, BartForConditionalGeneration
 from fuzzywuzzy import fuzz
 from evaluate import load
@@ -7,6 +8,8 @@ import nltk
 nltk.download('punkt')  # Necessary for the sent_tokenize function
 
 app = Flask(__name__)
+
+dataset = load_dataset("cnn_dailymail", '3.0.0', split="test")
 
 # Load pre-trained model and tokenizer
 tokenizer = BartTokenizer.from_pretrained('facebook/bart-large-cnn')
@@ -48,6 +51,7 @@ def summarize():
     article_text = ""
     highlighted_article = ""
     highlighted_summary = ""
+    rouge_scores = {}
     
     if request.method == "POST":
         article_text = request.form['article']
@@ -57,7 +61,10 @@ def summarize():
 
         # Highlight matching sentences between the article and summary
         highlighted_article, highlighted_summary = highlight_matches(article_text, summary)
-        rouge_scores = compute_rouge(generated_summary, reference_summary)
+        # Ground truth summary from the dataset
+        ground_truth_summary = dataset['highlights'][0]
+        rouge_scores = compute_rouge(summary, ground_truth_summary)
+        print(rouge_scores)
 
     
     return render_template("index.html", summary=summary, highlighted_article=highlighted_article, highlighted_summary=highlighted_summary, article_text=article_text, rouge_scores=rouge_scores)
