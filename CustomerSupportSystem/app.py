@@ -7,9 +7,9 @@ from agents.escalation_agent import EscalationAgent
 app = FastAPI()
 
 # Initialize the agents
-greeter = GreeterAgent()
-faq_agent = FAQAgent()
 escalation_agent = EscalationAgent()
+greeter = GreeterAgent()
+faq_agent = FAQAgent(escalation_agent)
 
 # Define the /greet endpoint
 @app.get("/greet")
@@ -19,11 +19,9 @@ def greet_user():
 # Define the /faq endpoint
 @app.get("/faq")
 def get_faq_answer(question: str):
-    print(escalation_agent.get_escalation_log())
     return {"answer": faq_agent.get_answer(question)}
 
 @app.get("/escalation-log")
 def get_escalation_log():
-    print(escalation_agent.get_escalation_log())
     # Endpoint to view all escalated issues (for admin review)
     return {"escalated_issues": escalation_agent.get_escalation_log()}

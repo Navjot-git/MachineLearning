@@ -3,10 +3,10 @@ from transformers import pipeline
 from agents.escalation_agent import EscalationAgent
 
 class FAQAgent:
-    def __init__(self):
+    def __init__(self, escalation_agent):
         # Load the pre-trained model for question-answering
         self.qa_pipeline = pipeline("question-answering", model="distilbert-base-uncased-distilled-squad")
-        self.escalation_agent = EscalationAgent() # Initialize the Escalation Agent
+        self.escalation_agent = escalation_agent
         # Load FAQ data from the JSON file
         with open("faq_data.json", "r") as f:
             self.faq_data = json.load(f)["faqs"]
