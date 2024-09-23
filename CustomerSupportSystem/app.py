@@ -1,7 +1,8 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from agents.greeter_agent import GreeterAgent
 from agents.faq_agent import FAQAgent
 from agents.escalation_agent import EscalationAgent
+from agents.feedback_agent import FeedbackAgent
 
 # Create the FastAPI app
 app = FastAPI()
@@ -10,6 +11,7 @@ app = FastAPI()
 escalation_agent = EscalationAgent()
 greeter = GreeterAgent()
 faq_agent = FAQAgent(escalation_agent)
+feedback_agent = FeedbackAgent()
 
 # Define the /greet endpoint
 @app.get("/greet")
@@ -25,3 +27,15 @@ def get_faq_answer(question: str):
 def get_escalation_log():
     # Endpoint to view all escalated issues (for admin review)
     return {"escalated_issues": escalation_agent.get_escalation_log()}
+
+# Feedback collection endpoint
+@app.post("/feedback")
+async def submit_feedback(request: Request):
+    data = await request.json()
+    feedback = data.get("feedback")
+    return {"message": feedback_agent.collect_feedback(feedback)}
+
+# View all feedback (for admin or review purposes)
+@app.get("/feedback-log")
+def view_feedback():
+    return {"all_feedback": feedback_agent.get_all_feedback()}

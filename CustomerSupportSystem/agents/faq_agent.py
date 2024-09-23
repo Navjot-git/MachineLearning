@@ -17,8 +17,7 @@ class FAQAgent:
         
         # Use the model to find the most relevant answer
         response = self.qa_pipeline(question=question, context=context)
-        print(question, context)
-        print(response['score'])
+
         # If confidence is low, escalate the issue
         if response['score'] < 0.6: # Threshold for low confidence
             return self.escalation_agent.escalate_issue(question)
