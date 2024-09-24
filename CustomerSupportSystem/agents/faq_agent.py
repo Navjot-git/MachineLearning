@@ -1,12 +1,12 @@
 import json
 from transformers import pipeline
-from agents.escalation_agent import EscalationAgent
 
 class FAQAgent:
     def __init__(self, escalation_agent):
         # Load the pre-trained model for question-answering
         self.qa_pipeline = pipeline("question-answering", model="distilbert-base-uncased-distilled-squad")
         self.escalation_agent = escalation_agent
+        self.escalation_flag = False 
         # Load FAQ data from the JSON file
         with open("faq_data.json", "r") as f:
             self.faq_data = json.load(f)["faqs"]
@@ -20,7 +20,11 @@ class FAQAgent:
 
         # If confidence is low, escalate the issue
         if response['score'] < 0.6: # Threshold for low confidence
+            self.escalation_flag = True
             return self.escalation_agent.escalate_issue(question)
         
         # Return the answer with the highest score
         return response["answer"]
+
+    def has_escalated(self):
+        return self.escalation_flag

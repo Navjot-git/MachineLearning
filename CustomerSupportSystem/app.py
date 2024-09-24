@@ -10,8 +10,8 @@ app = FastAPI()
 # Initialize the agents
 escalation_agent = EscalationAgent()
 greeter = GreeterAgent()
-faq_agent = FAQAgent(escalation_agent)
-feedback_agent = FeedbackAgent()
+faq_agent = FAQAgent(escalation_agent) # FAQ agent passes escalation agent
+feedback_agent = FeedbackAgent(faq_agent, escalation_agent) # Feedback agent checks FAQ agent's escalation status
 
 # Define the /greet endpoint
 @app.get("/greet")
