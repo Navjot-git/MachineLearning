@@ -1,0 +1,116 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
+
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 50px;
+}
+
+/* Card Styles */
+.card {
+    background-color: white;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    padding: 20px;
+    width: 250px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 0 20px;
+    opacity: 1;  /* Default opacity */
+    transition: opacity 0.5s ease, border-color 0.5s ease;  /* Smooth transitions */
+}
+
+/* Specific Card Styles */
+.faq {
+    border-color: green;
+}
+
+.escalation {
+    border-color: red;
+}
+
+.feedback {
+    border-color: blue;
+}
+
+/* Arrow Styles */
+.arrow {
+    font-size: 30px;
+    color: #666;
+    transition: color 0.5s ease;
+}
+
+/* Query Input and Button */
+.query-input {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+#user-query {
+    padding: 10px;
+    width: 300px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+#submit-query {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#submit-query:hover {
+    background-color: #0056b3;
+}
+
+/* Feedback Input */
+#feedback-input {
+    padding: 10px;
+    width: 100%;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+#submit-feedback {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#submit-feedback:hover {
+    background-color: #218838;
+}
+
+/* Disabled/Inactive States for Cards */
+.card[style*="opacity: 0.3"] {
+    background-color: #f0f0f0;
+    color: #999;
+}
+

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Escalation Journey Tracker</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- Input for user query -->
+        <div class="query-input">
+            <input type="text" id="user-query" placeholder="Enter your question here">
+            <button id="submit-query">Submit Query</button>
+        </div>
+
+        <!-- FAQ Agent Card -->
+        <div class="card faq">
+            <h2>FAQ Agent</h2>
+            <p>Attempting to answer your question.</p>
+        </div>
+
+        <!-- Arrow -->
+        <div class="arrow">→</div>
+
+        <!-- Escalation Agent Card -->
+        <div class="card escalation">
+            <h2>Escalation Agent</h2>
+            <p>Your issue has been escalated to a human agent.</p>
+        </div>
+
+        <!-- Arrow -->
+        <div class="arrow">→</div>
+
+        <!-- Feedback Collection Card -->
+        <div class="card feedback">
+            <h2>Feedback Collection</h2>
+            <p>Please provide feedback on your experience.</p>
+            <textarea id="feedback-input" placeholder="Enter your feedback here..."></textarea>
+            <button id="submit-feedback">Submit Feedback</button>
+        </div>
+    </div>
+
+    <!-- Link to the JavaScript file -->
+    <script src="/static/app.js"></script>
+</body>
+</html>

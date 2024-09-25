@@ -13,8 +13,7 @@ class FeedbackAgent:
         sentiment = self.sentiment_agent.analyze_sentiment(user_feedback)
 
         # If feedback is negative and FAQ Agent has not escalated, escalate the issue
-        if sentiment['compound'] < -0.5:
-        #and not self.faq_agent.has_escalated():
+        if sentiment['compound'] < -0.5 and not self.faq_agent.has_escalated():
             self.escalation_agent.escalate_issue(user_feedback)
 
         # Add feedback to the log along with sentiment analysis
