@@ -7,19 +7,46 @@
     <link rel="stylesheet" href="/static/styles.css">
 </head>
 <body>
-
+    <!-- New Horizontal Block -->
+    <div class="horizontal-block">
+        <h1>Interactive Escalation Journey Tracker</h1>
+        <hr>
+        <div class="row">
+            <div class="column">
+                <img src="/static/agent.png" alt="Image in Column 2" width="100%">
+            </div>
+            <div class="column">
+                <ul>
+                    <li style="color: rgb(71, 25, 197);">Greeter Agent: "Introduces and guides users through the different support options available within the system."</li>
+                    <li style="color: rgb(11, 103, 62);">FAQ Agent: "Automatically answers common questions by retrieving relevant information from a predefined FAQ database."</li>
+                    <li style="color: rgb(237, 38, 71);">Escalation Agent: "Handles queries that require human intervention by escalating complex or unsolved issues to customer support specialists."</li>
+                    <li style="color: rgb(127, 118, 18);">Feedback Collection Agent: "Gathers user feedback on their experience with the support system to enhance service quality and effectiveness."</li>
+                    <li style="color: rgba(234, 1, 230, 0.912);">Sentiment Agent: "Analyzes the emotional tone of user interactions to better understand their satisfaction and tailor responses accordingly."</li>
+                </ul>
+            </div>
+        </div>
+        
+    </div>
     <div class="container">
-
-        <!-- Input for user query -->
+        
+        <!-- Input for user query
         <div class="query-input">
             <input type="text" id="user-query" placeholder="Enter your question here">
             <button id="submit-query">Submit Query</button>
-        </div>
+        </div> -->
 
         <!-- FAQ Agent Card -->
         <div class="card faq">
             <h2>FAQ Agent</h2>
             <p>Attempting to answer your question.</p>
+            
+            <input type="text" id="user-query" placeholder="Enter your question here">
+            <button id="submit-query">Submit Query</button>
+            
+            <!-- Element to display the response -->
+            <div class="response" id="responseText"></div>
+
+            
         </div>
 
         <!-- Arrow -->
@@ -36,10 +63,30 @@
 
         <!-- Feedback Collection Card -->
         <div class="card feedback">
-            <h2>Feedback Collection</h2>
+            <h2>Feedback Agent</h2>
             <p>Please provide feedback on your experience.</p>
             <textarea id="feedback-input" placeholder="Enter your feedback here..."></textarea>
             <button id="submit-feedback">Submit Feedback</button>
+        </div>
+
+        <!-- Arrow -->
+        <div class="arrow">→</div>
+
+        <!-- Feedback Collection Card -->
+        <div class="card sentiment">
+            <h2>Sentiment Agent</h2>
+            <p>Sentiment Analysis for your feedback</p>
+            <!-- Element to display the response -->
+            <div class="response" id="responseSentimentText"></div>
+        </div>
+
+        <!-- Arrow -->
+        <div class="arrow">→</div>
+
+        <!-- Escalation Agent Card -->
+        <div class="card escalation2">
+            <h2>Escalation Agent</h2>
+            <p>Your issue has been escalated to a human agent.</p>
         </div>
     </div>
 

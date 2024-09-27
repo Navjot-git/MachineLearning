@@ -1,5 +1,5 @@
 * {
-    margin: 0;
+    margin: 10px;
     padding: 0;
     box-sizing: border-box;
 }
@@ -9,6 +9,24 @@ body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
 }
+
+h1 {
+    margin-bottom: 100;
+}
+
+
+.horizontal-block {
+    background-color: white; /* Matching the card background */
+    border: 2px solid #8910b2; /* Consistent with card border */
+    border-radius: 10px; /* Rounded corners like cards */
+    padding: 20px; /* Padding like cards */
+    text-align: center; /* Center the text inside the block */
+    margin: 10px 0; /* Space above and below */
+    width: calc(100% - 40px); /* Full width minus padding for visual consistency */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow like cards */
+    margin-left: 20px;
+}
+
 
 .container {
     display: flex;
@@ -23,10 +41,10 @@ body {
     border: 2px solid #ccc;
     border-radius: 10px;
     padding: 20px;
-    width: 250px;
+    width: 100%;
     text-align: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin: 0 20px;
+    margin: 0 0;
     opacity: 1;  /* Default opacity */
     transition: opacity 0.5s ease, border-color 0.5s ease;  /* Smooth transitions */
 }
@@ -36,12 +54,21 @@ body {
     border-color: green;
 }
 
-.escalation {
+.response {
+    margin-top: 15px;
+    color: #333;
+}
+
+.escalation, .escalation2{
     border-color: red;
 }
 
 .feedback {
     border-color: blue;
+}
+
+.sentiment {
+    border-color: rgba(234, 1, 230, 0.912);
 }
 
 /* Arrow Styles */
@@ -57,6 +84,7 @@ body {
     flex-direction: column;
     align-items: center;
     margin-bottom: 30px;
+    font-size: small;
 }
 
 #user-query {
@@ -84,7 +112,7 @@ body {
 }
 
 /* Feedback Input */
-#feedback-input {
+#feedback-input, #user-query {
     padding: 10px;
     width: 100%;
     border-radius: 5px;
@@ -114,3 +142,13 @@ body {
     color: #999;
 }
 
+.row {
+    display: grid;
+    grid-template-columns: 1fr 2fr; /* Creates two equal columns */
+    gap: 10px; /* Space between the columns */
+  }
+  
+.column {
+    padding: 10px;
+    border: 1px solid black;
+  }
