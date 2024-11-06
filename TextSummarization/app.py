@@ -5,7 +5,7 @@ from fuzzywuzzy import fuzz
 from evaluate import load
 from nltk.tokenize import sent_tokenize
 import nltk
-nltk.download('punkt')  # Necessary for the sent_tokenize function
+nltk.download('punkt_tab')  # Necessary for the sent_tokenize function
 
 app = Flask(__name__)
 
